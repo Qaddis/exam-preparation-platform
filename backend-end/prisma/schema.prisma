@@ -1,0 +1,62 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Student {
+  id String @id @default(cuid())
+
+  email String @unique // E-mail
+  password String // Пароль
+  name String // Имя ученика
+
+  classrooms Classroom[] @relation("ClassroomStudents")
+  exercises Exercise[] @relation("DecidedExercises") // Список решённых задач
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+}
+
+model Teacher {
+  id String @id @default(cuid())
+
+  email String @unique // E-mail
+  password String // Пароль
+  name String // Имя учителя
+
+  // Список классов, которые создал
+  classroom Classroom[] @relation("TeacherClassrooms")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+}
+
+model Classroom {
+  id String @id @default(cuid())
+
+  teacherId String @map("teacher_id") // ID учителя
+  // Учитель, который создал класс (отношение с моделью "учитель")
+  teacher Teacher @relation("TeacherClassrooms", fields: [teacherId], references: [id])
+
+  students Student[] @relation("ClassroomStudents") // Список учеников в классе
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+}
+
+model Exercise {
+  id String @id @default(cuid())
+
+  // Список учеников, которые решили задачу
+  decided Student[] @relation("DecidedExercises")
+
+  problem String // Задача/пример
+  answer String // Ответ
+  available DateTime // Доступно до
+
+  createdAt DateTime @default(now()) @map("created_at")
+}
