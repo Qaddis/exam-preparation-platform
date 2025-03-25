@@ -7,56 +7,57 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Student {
+// Роли пользователей
+enum Role {
+  STUDENT
+  TEACHER
+}
+
+// Модель пользователя
+model User {
   id String @id @default(cuid())
 
-  email String @unique // E-mail
+  email    String @unique // E-mail
   password String // Пароль
-  name String // Имя ученика
+  name     String // Имя
 
+  role Role @default(STUDENT) // Роль (ученик/учитель)
+
+  // Примеры, которые решил (ученик)
+  solved Exercise[] @relation("DecidedExercises")
+
+  // Классы, в которых состоит (ученик)
   classrooms Classroom[] @relation("ClassroomStudents")
-  exercises Exercise[] @relation("DecidedExercises") // Список решённых задач
+
+  // Классы, которые создал (учитель)
+  teaching Classroom[] @relation("TeacherClassrooms")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 }
 
-model Teacher {
-  id String @id @default(cuid())
-
-  email String @unique // E-mail
-  password String // Пароль
-  name String // Имя учителя
-
-  // Список классов, которые создал
-  classroom Classroom[] @relation("TeacherClassrooms")
-
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-}
-
+// Модель класса
 model Classroom {
   id String @id @default(cuid())
 
+  teacher   User   @relation("TeacherClassrooms", fields: [teacherId], references: [id]) // Учитель
   teacherId String @map("teacher_id") // ID учителя
-  // Учитель, который создал класс (отношение с моделью "учитель")
-  teacher Teacher @relation("TeacherClassrooms", fields: [teacherId], references: [id])
 
-  students Student[] @relation("ClassroomStudents") // Список учеников в классе
+  students User[] @relation("ClassroomStudents") // Список учеников
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 }
 
+// Модель задания
 model Exercise {
   id String @id @default(cuid())
 
-  // Список учеников, которые решили задачу
-  decided Student[] @relation("DecidedExercises")
+  problem   String // Текст задачи
+  answer    String // Ответ
+  available DateTime // Время, до которого задача будет доступна
 
-  problem String // Задача/пример
-  answer String // Ответ
-  available DateTime // Доступно до
+  decided User[] @relation("DecidedExercises") // Список пользователей, которые решили задачу
 
   createdAt DateTime @default(now()) @map("created_at")
 }
