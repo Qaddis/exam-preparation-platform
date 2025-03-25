@@ -41,6 +41,7 @@ model Classroom {
   id String @id @default(cuid())
 
   name String // Название класса
+  code String @unique // Код класса
 
   teacher   User   @relation("TeacherClassrooms", fields: [teacherId], references: [id]) // Учитель
   teacherId String @map("teacher_id") // ID учителя

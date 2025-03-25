@@ -1,0 +1,69 @@
+import {
+	Body,
+	Controller,
+	Delete,
+	Patch,
+	Post,
+	UseGuards,
+	UsePipes,
+	ValidationPipe
+} from "@nestjs/common"
+import { Auth } from "src/auth/decorators/auth.decorator"
+import { Roles } from "src/user/decorators/role.decorator"
+import { CurrentUser } from "src/user/decorators/user.decorator"
+import { RoleGuard } from "src/user/guards/role.guard"
+import { ClassroomService } from "./classroom.service"
+import { ClassroomDto } from "./dto/classroom.dto"
+import { ClassroomCodeDto } from "./dto/classroomCode.dto"
+import { ClassroomIdDto } from "./dto/classroomId.dto"
+
+@Controller("classrooms")
+@UseGuards(RoleGuard)
+@Auth()
+export class ClassroomController {
+	constructor(private readonly classroomService: ClassroomService) {}
+
+	// Присоединиться к классу (ученик)
+	@UsePipes(new ValidationPipe())
+	@Patch("connect")
+	@Roles("STUDENT")
+	connectToClassroom(
+		@CurrentUser("id") studentId: string,
+		@Body() dto: ClassroomCodeDto
+	) {
+		return this.classroomService.connectToClassroom(studentId, dto)
+	}
+
+	// Выйти из класса (ученик)
+	@UsePipes(new ValidationPipe())
+	@Patch("disconnect")
+	@Roles("STUDENT")
+	disconnectFromClassroom(
+		@CurrentUser("id") studentId: string,
+		@Body() dto: ClassroomIdDto
+	) {
+		return this.classroomService.disconnectFromClassroom(studentId, dto)
+	}
+
+	// Создать класс (учитель)
+	@UsePipes(new ValidationPipe())
+	@Delete("delete")
+	@Roles("TEACHER")
+	createClassroom(
+		@CurrentUser("id") teacherId: string,
+		@Body() dto: ClassroomDto
+	) {
+		return this.classroomService.createClassroom(teacherId, dto)
+	}
+
+	// Удалить класс (учитель)
+	@UsePipes(new ValidationPipe())
+	@Post("create")
+	@Roles("TEACHER")
+	deleteClassroom(
+		@CurrentUser("id") teacherId: string,
+		@Body() dto: ClassroomIdDto
+	) {
+		return this.classroomService.deleteClassroom(teacherId, dto)
+	}
+}
