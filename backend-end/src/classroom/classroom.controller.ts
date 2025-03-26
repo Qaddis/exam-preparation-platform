@@ -2,6 +2,8 @@ import {
 	Body,
 	Controller,
 	Delete,
+	Get,
+	Param,
 	Patch,
 	Post,
 	UseGuards,
@@ -22,6 +24,15 @@ import { ClassroomIdDto } from "./dto/classroomId.dto"
 @Auth()
 export class ClassroomController {
 	constructor(private readonly classroomService: ClassroomService) {}
+
+	// Получение информации о классе по id
+	@Get("/:classroomId")
+	getClassroom(
+		@CurrentUser("id") userId: string,
+		@Param("classroomId") classroomId: string
+	) {
+		return this.classroomService.getById(userId, classroomId)
+	}
 
 	// Присоединиться к классу (ученик)
 	@UsePipes(new ValidationPipe())

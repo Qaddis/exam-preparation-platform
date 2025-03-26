@@ -34,6 +34,8 @@ model User {
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("Users")
 }
 
 // Модель класса
@@ -48,8 +50,12 @@ model Classroom {
 
   students User[] @relation("ClassroomStudents") // Список учеников
 
+  exercises Exercise[] @relation("ClassroomExercises") // Список заданий
+
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("Classrooms")
 }
 
 // Модель задания
@@ -62,5 +68,10 @@ model Exercise {
 
   decided User[] @relation("DecidedExercises") // Список пользователей, которые решили задачу
 
+  classroom   Classroom @relation("ClassroomExercises", fields: [classroomId], references: [id]) // Класс, в котором выложили задание
+  classroomId String    @map("classroom_id") // ID Класса
+
   createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("Exercises")
 }

@@ -18,7 +18,22 @@ export class ClassroomService {
 	private async byId(id: string) {
 		const classroom = await this.prisma.classroom.findUnique({
 			where: { id },
-			include: { students: true }
+			select: {
+				id: true,
+				name: true,
+				teacher: {
+					select: {
+						id: true,
+						name: true
+					}
+				},
+				students: {
+					select: {
+						id: true,
+						name: true
+					}
+				}
+			}
 		})
 
 		if (!classroom) throw new NotFoundException("This classroom was not found")
@@ -38,6 +53,16 @@ export class ClassroomService {
 		}
 
 		return result
+	}
+
+	// Получение информации о классе по id
+	async getById(userId: string, classroomId: string) {
+		const classroom = await this.byId(classroomId)
+
+		if (!classroom.students.some(student => student.id === userId))
+			throw new ForbiddenException("No access")
+
+		return classroom
 	}
 
 	// Присоединиться к классу (ученик)
@@ -127,7 +152,7 @@ export class ClassroomService {
 	async deleteClassroom(teacherId: string, dto: ClassroomIdDto) {
 		const classroom = await this.byId(dto.classroomId)
 
-		if (classroom.teacherId !== teacherId)
+		if (classroom.teacher.id !== teacherId)
 			throw new ForbiddenException("No access")
 
 		try {
