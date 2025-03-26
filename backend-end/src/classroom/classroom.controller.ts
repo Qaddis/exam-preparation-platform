@@ -47,7 +47,7 @@ export class ClassroomController {
 
 	// Создать класс (учитель)
 	@UsePipes(new ValidationPipe())
-	@Delete("delete")
+	@Post("create")
 	@Roles("TEACHER")
 	createClassroom(
 		@CurrentUser("id") teacherId: string,
@@ -58,7 +58,7 @@ export class ClassroomController {
 
 	// Удалить класс (учитель)
 	@UsePipes(new ValidationPipe())
-	@Post("create")
+	@Delete("delete")
 	@Roles("TEACHER")
 	deleteClassroom(
 		@CurrentUser("id") teacherId: string,
