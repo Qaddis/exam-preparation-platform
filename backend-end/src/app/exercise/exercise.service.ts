@@ -5,7 +5,7 @@ import {
 	NotFoundException
 } from "@nestjs/common"
 import { Exercise, User } from "@prisma/client"
-import { PrismaService } from "src/prisma.service"
+import { PrismaService } from "src/app/prisma.service"
 import { CompleteExerciseDto } from "./dto/completeExercise.dto"
 import { CreateExerciseDto } from "./dto/createExercise.dto"
 import { ExerciseIdDto } from "./dto/exerciseId.dto"

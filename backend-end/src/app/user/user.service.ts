@@ -6,7 +6,7 @@ import {
 } from "@nestjs/common"
 import { Prisma } from "@prisma/client"
 import { hash } from "argon2"
-import { PrismaService } from "src/prisma.service"
+import { PrismaService } from "src/app/prisma.service"
 import { ProfileDto } from "./dto/profile.dto"
 
 @Injectable()

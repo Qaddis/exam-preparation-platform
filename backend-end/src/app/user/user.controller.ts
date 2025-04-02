@@ -7,8 +7,8 @@ import {
 	UsePipes,
 	ValidationPipe
 } from "@nestjs/common"
-import { Auth } from "src/auth/decorators/auth.decorator"
-import { CurrentUser } from "src/user/decorators/user.decorator"
+import { Auth } from "src/app/auth/decorators/auth.decorator"
+import { CurrentUser } from "src/app/user/decorators/user.decorator"
 import { ProfileDto } from "./dto/profile.dto"
 import { UserService } from "./user.service"
 

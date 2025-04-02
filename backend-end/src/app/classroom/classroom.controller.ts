@@ -10,10 +10,10 @@ import {
 	UsePipes,
 	ValidationPipe
 } from "@nestjs/common"
-import { Auth } from "src/auth/decorators/auth.decorator"
-import { Roles } from "src/user/decorators/role.decorator"
-import { CurrentUser } from "src/user/decorators/user.decorator"
-import { RoleGuard } from "src/user/guards/role.guard"
+import { Auth } from "src/app/auth/decorators/auth.decorator"
+import { Roles } from "src/app/user/decorators/role.decorator"
+import { CurrentUser } from "src/app/user/decorators/user.decorator"
+import { RoleGuard } from "src/app/user/guards/role.guard"
 import { ClassroomService } from "./classroom.service"
 import { ClassroomDto } from "./dto/classroom.dto"
 import { ClassroomCodeDto } from "./dto/classroomCode.dto"

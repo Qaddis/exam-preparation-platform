@@ -5,7 +5,7 @@ import {
 	InternalServerErrorException,
 	NotFoundException
 } from "@nestjs/common"
-import { PrismaService } from "src/prisma.service"
+import { PrismaService } from "src/app/prisma.service"
 import { ClassroomDto } from "./dto/classroom.dto"
 import { ClassroomCodeDto } from "./dto/classroomCode.dto"
 import { ClassroomIdDto } from "./dto/classroomId.dto"
