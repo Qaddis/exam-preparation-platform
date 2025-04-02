@@ -59,10 +59,12 @@ export class ClassroomService {
 	async getById(userId: string, classroomId: string) {
 		const classroom = await this.byId(classroomId)
 
-		if (!classroom.students.some(student => student.id === userId))
-			throw new ForbiddenException("No access")
-
-		return classroom
+		if (
+			classroom.students.some(student => student.id === userId) ||
+			classroom.teacher.id === userId
+		)
+			return classroom
+		else throw new ForbiddenException("No access")
 	}
 
 	// Присоединиться к классу (ученик)
