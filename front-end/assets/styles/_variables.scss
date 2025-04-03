@@ -1,0 +1,22 @@
+:root {
+	--light-main-color: #fff;
+	--light-add-color: #eaebed;
+	--dark-main-color: #060606;
+	--dark-add-color: #0f0f0f;
+	--crayola-color: #f80759;
+	--mulberry-color: #bc4e9c;
+
+	--main-color: var(--light-main-color);
+	--add-color: var(--light-add-color);
+	--accent-color: var(--crayola-color);
+	--font-color: var(--dark-main-color);
+
+	--gradient: linear-gradient(
+		45deg,
+		var(--mulberry-color),
+		var(--crayola-color)
+	);
+
+	--roboto-font: "Roboto", sans-serif;
+	--roboto-slab-font: "Roboto Slab", serif;
+}

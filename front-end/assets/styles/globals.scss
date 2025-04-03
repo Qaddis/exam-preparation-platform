@@ -1,0 +1,16 @@
+/* Сброс начальных стилей */
+@use "reset";
+
+/* Переменные */
+@use "variables";
+
+/* Глобальные стили */
+html {
+	font-size: 18px;
+}
+
+body {
+	background-color: var(--add-color);
+	color: var(--font-color);
+	font-family: var(--roboto-font);
+}
