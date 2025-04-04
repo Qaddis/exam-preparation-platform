@@ -23,6 +23,21 @@ export class AuthService {
 		return { id: user.id, email: user.email, name: user.name, role: user.role }
 	}
 
+	// Верификация токена
+	async verifyToken(accessTokens: string) {
+		let verify
+
+		try {
+			verify = await this.jwt.verifyAsync(accessTokens)
+		} catch {
+			throw new UnauthorizedException("Invalid refresh token")
+		} finally {
+			if (!verify) throw new UnauthorizedException("Invalid refresh token")
+		}
+
+		return "ok"
+	}
+
 	// Генерация пары токенов
 	private issueTokens(userId: string) {
 		const data = { id: userId }

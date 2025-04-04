@@ -4,6 +4,7 @@ import {
 	Delete,
 	Get,
 	Param,
+	Patch,
 	Post,
 	UseGuards,
 	UsePipes,
@@ -25,6 +26,7 @@ import { ExerciseService } from "./exercise.service"
 export class ExerciseController {
 	constructor(private readonly exerciseService: ExerciseService) {}
 
+	// Получить упражнение по id
 	@Get("/:exerciseId")
 	getExercise(
 		@CurrentUser() user: User,
@@ -51,7 +53,7 @@ export class ExerciseController {
 
 	// Отправить ответ на задачу (ученик)
 	@UsePipes(new ValidationPipe())
-	@Post("complete")
+	@Patch("complete")
 	@Roles("STUDENT")
 	completeExercise(
 		@CurrentUser("id") studentId: string,
